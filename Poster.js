@@ -33,7 +33,7 @@ var draw = function() {
         ballX = mouseX;
         ballY = 340;
     }
-    
+     
     // draw the ball
     fill(255, 234, 0);
     ellipse(ballX, ballY, 20, 20);
