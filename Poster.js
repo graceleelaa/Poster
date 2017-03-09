@@ -1,73 +1,132 @@
-noStroke();
+//creates the balls and sets their position as well as the random timer for each
+private void spawnBalls1() {
 
-var paddleWidth = 100;
+    Rectangle ball1 = new Rectangle();
+    ball1.x = MathUtils.random(639, 641);
+    ball1.y = 720;
+    ball1.width = 32;
+    ball1.height = 32;
+    balls1.add(ball1);
+    lastDropTime = TimeUtils.nanoTime();
 
-// the speed of the ball when it first leaves the paddle
-var initialSpeedX = 5;
-var initialSpeedY = -6;
+}
 
-// the current speed of the ball
-var ballSpeedX = initialSpeedX;
-var ballSpeedY = initialSpeedY;
+private void spawnBalls2() {
 
-// the current location of the ball
-var ballX = 0;
-var ballY = 0;
+    Rectangle ball2 = new Rectangle();
+    ball2.x = 0;
+    ball2.y = MathUtils.random(359, 361);
+    ball2.width = 32;
+    ball2.height = 32;
+    balls2.add(ball2);
+    lastDropTime = TimeUtils.nanoTime();
+}
 
-// true if ball is moving, false if ball is attached to paddle
-var ballMoving = false;
+private void spawnBalls3() {
 
-var draw = function() {
-    background(0, 108, 135);
-    
-    // draw the paddle
-    fill(240, 126, 65);
-    rect(mouseX - paddleWidth/2, 350, paddleWidth, 10);
-    
-    // move the ball
-    if (ballMoving) {
-        ballX += ballSpeedX;
-        ballY += ballSpeedY;
-    }
-    else {
-        ballX = mouseX;
-        ballY = 340;
-    }
-     
-    // draw the ball
-    fill(255, 234, 0);
-    ellipse(ballX, ballY, 20, 20);
-    
-    // check if ball has hit the top wall
-    if (ballY <= 10) {
-        ballSpeedY = -ballSpeedY;
-    }
-    // check if the ball has hit the left wall
-    if (ballX <= 10) {
-        ballSpeedX = -ballSpeedX;
-    }
-    // check if the ball has hit the right wall
-    if (ballX >= 390) {
-        ballSpeedX = -ballSpeedX;
-    }
-    // check if the ball has hit the paddle
-    if (ballY >= 340 && ballY < 346 && ballX >= mouseX - paddleWidth/2 && ballX <= mouseX + paddleWidth/2) {
-        ballSpeedY = -ballSpeedY;
-    }
-    // check if ball fell out the bottom
-    if (ballY >= 400) {
-        ballMoving = false;
-    }
-};
+    Rectangle ball3 = new Rectangle();
+    ball3.x = MathUtils.random(639, 641);
+    ball3.y = 0;
+    ball3.width = 32;
+    ball3.height = 32;
+    balls3.add(ball3);
+    lastDropTime = TimeUtils.nanoTime();
+}
 
-// this function gets called automatically
-// when the mouse is clicked
-var mouseClicked = function() {
-    if (!ballMoving) {
-        // reset the ball speed
-        ballSpeedX = initialSpeedX;
-        ballSpeedY = initialSpeedY;
-        
-        ballMoving = true;
+private void spawnBalls4() {
+
+    Rectangle ball4 = new Rectangle();
+    ball4.x = 1280;
+    ball4.y = MathUtils.random(359, 361);
+    ball4.width = 32;
+    ball4.height = 32;
+    balls4.add(ball4);
+    lastDropTime = TimeUtils.nanoTime();
+}
+
+
+//draws the balls
+    for (Rectangle ball1 : balls1) {
+
+        batch.draw(Ball, ball1.x, ball1.y);
     }
-};
+
+    for (Rectangle ball2 : balls2) {
+
+        batch.draw(Ball, ball2.x, ball2.y);
+    }
+
+    for (Rectangle ball3 : balls3) {
+
+        batch.draw(Ball, ball3.x, ball3.y);
+    }
+
+    for (Rectangle ball4 : balls4) {
+
+        batch.draw(Ball, ball4.x, ball4.y);
+    }
+
+
+// if the time minus the time of the last ball spawn is less than x then spawn another ball in a random place
+    if (TimeUtils.nanoTime() - lastDropTime > 1000000000) spawnBalls1();
+
+    Iterator<Rectangle> iter1 = balls1.iterator();
+    while(iter1.hasNext()) {
+
+        Rectangle balls1 = iter1.next();
+        balls1.y -= 500 * Gdx.graphics.getDeltaTime();
+        if (balls1.overlaps(square)) {
+
+            score++;
+            showScore = "Score: " + score;
+            iter1.remove();
+        }
+    }
+
+    // if the time minus the time of the last ball spawn is less than x then spawn another ball in a random place
+    if (TimeUtils.nanoTime() - lastDropTime > 1000000000) spawnBalls2();
+
+    Iterator<Rectangle> iter2 = balls2.iterator();
+    while (iter2.hasNext()) {
+
+        Rectangle balls2 = iter2.next();
+        balls2.x += 500 * Gdx.graphics.getDeltaTime();
+        if (balls2.overlaps(square)) {
+
+            score++;
+            showScore = "Score: " + score;
+            iter2.remove();
+        }
+    }
+
+    // if the time minus the time of the last ball spawn is less than x then spawn another ball in a random place
+    if (TimeUtils.nanoTime() - lastDropTime > 1000000000) spawnBalls3();
+
+    Iterator<Rectangle> iter3 = balls3.iterator();
+    while(iter3.hasNext()) {
+
+        Rectangle balls3 = iter3.next();
+        balls3.y += 500 * Gdx.graphics.getDeltaTime();
+        if (balls3.overlaps(square)) {
+
+            score++;
+            showScore = "Score: " + score;
+            iter3.remove();
+        }
+    }
+
+    // if the time minus the time of the last ball spawn is less than x then spawn another ball in a random place
+    if (TimeUtils.nanoTime() - lastDropTime > 1000000000) spawnBalls4();
+
+    Iterator<Rectangle> iter4 = balls4.iterator();
+    while(iter4.hasNext()) {
+
+        Rectangle balls4 = iter4.next();
+        balls4.x -= 500 * Gdx.graphics.getDeltaTime();
+        if (balls4.overlaps(square)) {
+
+            score++;
+            showScore = "Score: " + score;
+            iter4.remove();
+        }
+    }
